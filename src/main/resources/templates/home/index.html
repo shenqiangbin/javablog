@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	
+    <title>Java资源</title>        
+</head>
+
+<body>
+	
+	<h2>Java资源列表</h2>
+	<div th:each="item: ${items}">
+      <div th:text="${item.name}">Oranges</div>      
+      <!--<a href="/" th:href="@{/order/details(orderId=${o.id})}">view</a>-->
+      <a href="/" th:href="${item.url}" th:text="${item.url}" target="_blank">view</a>
+	</div>
+	
+</body>
+</html>
