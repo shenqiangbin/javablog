@@ -20,6 +20,7 @@ public class ResultSetHelper {
 
 			while (resultSet.next()) {
 
+				// 此类要有默认的构造函数
 				T instance = type.newInstance();
 				Field[] fields = type.getDeclaredFields();
 				

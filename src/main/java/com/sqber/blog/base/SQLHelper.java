@@ -300,7 +300,7 @@ public class SQLHelper {
 
 		HikariConfig config = new HikariConfig();
 
-		config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/labdb?useUnicode=true&characterEncoding=utf8&useSSL=false");
+		config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/javablog?useUnicode=true&characterEncoding=utf8&useSSL=false");
 		config.setUsername("root");
 		config.setPassword("123456");
 		config.addDataSourceProperty("cachePrepStmts", "true");

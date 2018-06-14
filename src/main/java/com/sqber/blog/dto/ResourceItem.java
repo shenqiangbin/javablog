@@ -7,6 +7,10 @@ public class ResourceItem {
 	private String name;
 	private String url;
 
+	public ResourceItem() {
+		
+	}
+	
 	public ResourceItem(String name,String url) {
 		this.name = name;
 		this.url = url;
