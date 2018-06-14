@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sqber.blog.dto.ResourceItem;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Controller
 public class HomeController {
@@ -25,6 +27,16 @@ public class HomeController {
 		items.add(new ResourceItem("W3C School 的 Eclipse 教程","http://www.runoob.com/eclipse/eclipse-tutorial.html"));
 		
 		model.addAttribute("items", items);
+		
+		HikariConfig config = new HikariConfig();
+		config.setJdbcUrl("jdbc:mysql://localhost:3306/javablog");
+		config.setUsername("root");
+		config.setPassword("123456");
+		config.addDataSourceProperty("cachePrepStmts", "true");
+		config.addDataSourceProperty("prepStmtCacheSize", "250");
+		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+		HikariDataSource ds = new HikariDataSource(config);
 		
 		return "home/index";
 	}
