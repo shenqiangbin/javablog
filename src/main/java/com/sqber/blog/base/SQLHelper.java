@@ -12,54 +12,71 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class SQLHelper {
+	
 	/* 简单的新增 */
 	public static int Add_Demo() {
+		int result = -1;
 		try {
 			HikariDataSource dataSource = getDataSource();
 			Connection connection = dataSource.getConnection();
-
+	
 			Statement statement = connection.createStatement();
-			/* select @@IDENTITY */
+			
 			statement.execute("insert user values(NULL,'9','9',1);", Statement.RETURN_GENERATED_KEYS);
 			ResultSet resultSet = statement.getGeneratedKeys();
 			if (resultSet != null) {
 				if (resultSet.next()) {
-					return resultSet.getInt(1);
+					result = resultSet.getInt(1);
 				}
 			}
-
+					
+			if (connection != null && !connection.isClosed())
+				connection.close();
+			if (dataSource != null && !dataSource.isClosed())
+				dataSource.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return result;
 	}
 
 	/* 新增-参数化 */
 	public static int add_demo_with_param() {
+		int result = -1;
 		try {
 			HikariDataSource dataSource = getDataSource();
 			Connection connection = dataSource.getConnection();
-
+	
 			String sql = "insert user values(NULL,?,?,?)";
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			statement.setObject(1, "10");
 			statement.setObject(2, "10");
 			statement.setObject(3, 0);
 			statement.execute();
-
+	
 			ResultSet resultSet = statement.getGeneratedKeys();
 			if (resultSet != null) {
 				if (resultSet.next())
-					return resultSet.getInt(1);
+					result = resultSet.getInt(1);
 			}
+			
+			if (connection != null && !connection.isClosed())
+				connection.close();
+			if (dataSource != null && !dataSource.isClosed())
+				dataSource.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return result;
 	}
 
 	/* 抽取 */
 	public static int add(String sql, List<Object> params) {
+		
+		int result = -1;
+		
 		try {
 			HikariDataSource dataSource = getDataSource();
 			Connection connection = dataSource.getConnection();
@@ -75,43 +92,55 @@ public class SQLHelper {
 			ResultSet resultSet = statement.getGeneratedKeys();
 			if (resultSet != null) {
 				if (resultSet.next())
-					return resultSet.getInt(1);
+					result = resultSet.getInt(1);
 			}
+			
+			if (connection != null && !connection.isClosed())
+				connection.close();
+			if (dataSource != null && !dataSource.isClosed())
+				dataSource.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return result;
 	}
 
 	/* 更新 */
 	public static int update_dmeo() {
+		int result = -1;
 		try {
-
+	
 			HikariDataSource dataSource = getDataSource();
 			Connection connection = dataSource.getConnection();
-
+	
 			Statement statement = connection.createStatement();
-			return statement.executeUpdate("update user set username = 'changed' where userid = 4");
-
+			result = statement.executeUpdate("update user set username = 'changed' where userid = 4");
+	
+			if (connection != null && !connection.isClosed())
+				connection.close();
+			if (dataSource != null && !dataSource.isClosed())
+				dataSource.close();
+						
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return result;
 	}
 
 	/*参数化更新*/
 	public static int update_demo_with_param() {
 		try {
-
+	
 			HikariDataSource dataSource = getDataSource();
 			Connection connection = dataSource.getConnection();
-
+	
 			String sql = "update user set username = ? where userid = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setObject(1, "changed");
 			statement.setObject(2, 5);
 			return statement.executeUpdate();
-
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -158,7 +187,6 @@ public class SQLHelper {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			;
 		}
 		
 		return null;
@@ -169,20 +197,20 @@ public class SQLHelper {
 			/* HikariDataSource 是需要关闭的 */
 			HikariDataSource dataSource = getDataSource();
 			Connection connection = dataSource.getConnection();
-
+	
 			String sql = "select * from user where usercode = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setObject(1, "admin");
 			ResultSet resultSet = statement.executeQuery();
 		
-
+	
 			if (connection != null && !connection.isClosed())
 				connection.close();
 			if (dataSource != null && !dataSource.isClosed())
 				dataSource.close();
 			
 			return resultSet;
-
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
