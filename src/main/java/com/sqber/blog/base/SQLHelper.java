@@ -8,8 +8,6 @@ import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +17,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Component
 public class SQLHelper {
 
-	public static int add(String sql, List<Object> params) {
+	public int add(String sql, List<Object> params) {
 
 		int result = -1;
 
@@ -52,7 +50,7 @@ public class SQLHelper {
 		return result;
 	}	
 
-	public static int update(String sql, List<Object> params) {
+	public int update(String sql, List<Object> params) {
 		int result = -1;
 		try {
 
@@ -81,8 +79,7 @@ public class SQLHelper {
 		return result;
 	}
 
-	
-	public static <T> List<T> query(String sql, List<Object> params, Class<T> type) {
+	public <T> List<T> query(String sql, List<Object> params, Class<T> type) {
 		try {
 			/* HikariDataSource 是需要关闭的 */
 			HikariDataSource dataSource = getDataSource();
@@ -116,7 +113,7 @@ public class SQLHelper {
 	/*
 	 * 将上面的查询语句 和 参数 抽取出来
 	 */
-	public static String executeScalar(String sql, List<Object> params) {
+	public String executeScalar(String sql, List<Object> params) {
 		String result = null;
 		try {
 			/* HikariDataSource 是需要关闭的 */
@@ -147,7 +144,7 @@ public class SQLHelper {
 		return result;
 	}
 
-	public static <T> PageResult<T> queryPage(String sql, List<Object> params, int currentPage, int pageSize,
+	public <T> PageResult<T> queryPage(String sql, List<Object> params, int currentPage, int pageSize,
 			Class<T> type) {
 
 		PageResult<T> result = new PageResult<T>();
@@ -155,12 +152,12 @@ public class SQLHelper {
 		int startIndex = (currentPage - 1) * pageSize;
 
 		String querySql = MessageFormat.format("{0} limit {1},{2}", sql, startIndex, pageSize);
-		List<T> models = SQLHelper.query(querySql, params, type);
+		List<T> models = query(querySql, params, type);
 		result.setData(models);
 
 		// 正则，将select 和 from 中间的字符串替换成 count(0);
 		String countSql = MessageFormat.format("select count(0) from ({0})t ", sql);
-		String countStr = SQLHelper.executeScalar(countSql, params);
+		String countStr = executeScalar(countSql, params);
 		int countVal = 0;
 		if (!isBlank(countStr))
 			countVal = Integer.parseInt(countStr);
@@ -173,7 +170,7 @@ public class SQLHelper {
 		return result;
 	}
 
-	private static boolean isBlank(String str) {
+	private boolean isBlank(String str) {
 		int strLen;
 		if (str == null || (strLen = str.length()) == 0) {
 			return true;
@@ -185,18 +182,11 @@ public class SQLHelper {
 		}
 		return true;
 	}
-
 	
 	@Autowired
-	private MySQLDataSourceConfig config1;
-	private static MySQLDataSourceConfig config;
+	private MySQLDataSourceConfig config;
 	
-	@PostConstruct
-	public void init() {
-		config = config1;
-	}
-	
-	private static HikariDataSource getDataSource() throws SQLException {
+	private HikariDataSource getDataSource() throws SQLException {
 
 //		HikariConfig config = new HikariConfig();
 //
