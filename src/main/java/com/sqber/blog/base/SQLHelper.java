@@ -8,9 +8,15 @@ import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.List;
 
-import com.zaxxer.hikari.HikariConfig;
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.sqber.blog.config.MySQLDataSourceConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+@Component
 public class SQLHelper {
 
 	public static int add(String sql, List<Object> params) {
@@ -180,16 +186,26 @@ public class SQLHelper {
 		return true;
 	}
 
+	
+	@Autowired
+	private MySQLDataSourceConfig config1;
+	private static MySQLDataSourceConfig config;
+	
+	@PostConstruct
+	public void init() {
+		config = config1;
+	}
+	
 	private static HikariDataSource getDataSource() throws SQLException {
 
-		HikariConfig config = new HikariConfig();
-
-		config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/javablog?useUnicode=true&characterEncoding=utf8&useSSL=false");
-		config.setUsername("root");
-		config.setPassword("123456");
-		config.addDataSourceProperty("cachePrepStmts", "true");
-		config.addDataSourceProperty("prepStmtCacheSize", "250");
-		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+//		HikariConfig config = new HikariConfig();
+//
+//		config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/javablog?useUnicode=true&characterEncoding=utf8&useSSL=false");
+//		config.setUsername("root");
+//		config.setPassword("123456");
+//		config.addDataSourceProperty("cachePrepStmts", "true");
+//		config.addDataSourceProperty("prepStmtCacheSize", "250");
+//		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
 		return new HikariDataSource(config);
 	}
