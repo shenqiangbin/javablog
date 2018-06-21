@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.sqber.blog.base.*;
+import com.sqber.blog.base.SQLHelper;
 import com.sqber.blog.dto.ResourceItem;
 
 
@@ -28,4 +28,13 @@ public class HomeController {
 		return "home/index";
 	}
 	
+	@GetMapping("/test")
+	public String test(Model model) {
+		
+		ResourceItem resourceItem = new ResourceItem();
+		resourceItem.setName("小明");
+		model.addAttribute("resourceItem",resourceItem);
+		
+		return "home/test";
+	}	
 }
