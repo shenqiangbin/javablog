@@ -55,3 +55,77 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-06-14 17:03:33
+
+drop table if exists project;
+create table project (
+	id int(11) not null auto_increment,
+    name nvarchar(300) not null comment '项目名称',
+    startTime datetime default null comment '项目开始时间',
+    endTime datetime default null comment '项目结束时间',
+    createTime datetime default null comment '记录创建时间',
+    createUser varchar(100) default null comment '记录创建人',
+    updateTime datetime default null comment '记录更新时间',
+    updateUser datetime default null comment '记录更新人',
+    status int(11) not null default 1 comment '记录状态：1-未删除，0-删除',
+    primary key (id)
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='项目表';
+
+
+drop table if exists module;
+create table module(
+	id int(11) not null auto_increment,
+    projectid int(11) not null comment '项目id',
+    code varchar(100) not null unique comment '模块编号',
+    name nvarchar(300) not null comment '模块名称',
+    parentCode varchar(100) not null comment '父模块编号',
+    createTime datetime default null comment '记录创建时间',
+    createUser varchar(100) default null comment '记录创建人',
+    updateTime datetime default null comment '记录更新时间',
+    updateUser datetime default null comment '记录更新人',
+    status int(11) not null default 1 comment '记录状态：1-未删除，0-删除',
+    primary key (id)
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='项目模块表';
+
+drop table if exists task;
+create table task(
+	id int(11) not null auto_increment,
+   
+	title nvarchar(100) not null comment '任务标题',
+    taskType int not null comment '类型：0-需求 1-BUG',
+    taskStatus int not null comment '任务状态： 0-未开始，1-处理中，2-处理完成，3-处理不了',
+    
+    projectId int not null comment '所属项目',
+    moduleId int not null comment '所属模块',
+   
+	demandor varchar(100) not null comment '提出人',
+    assignTo varchar(100) not null comment '分配人',
+	solver varchar(100) not null comment '解决人',
+    
+    content nvarchar(1000) not null comment '任务内容',
+    
+	putTime datetime not null comment '提出时间',
+    
+    scheduledStart datetime not null comment '预计开始时间',
+    scheduledEnd datetime not null comment '预计结束时间',
+   
+    createTime datetime default null comment '记录创建时间',
+    createUser varchar(100) default null comment '记录创建人',
+    updateTime datetime default null comment '记录更新时间',
+    updateUser datetime default null comment '记录更新人',
+    status int(11) not null default 1 comment '记录状态：1-未删除，0-删除',
+    primary key (id)
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='任务表';
+
+drop table if exists taskLine;
+create table taskLine(
+	id int(11) not null auto_increment,
+	taskId int(11) not null comment '任务id',
+    lineType int(11) not null comment '任务线类型：0-开始 9-结束 1-暂停 2-普通记录 3-总结 4-SQL',
+    createTime datetime default null comment '记录创建时间',
+    createUser varchar(100) default null comment '记录创建人',
+    updateTime datetime default null comment '记录更新时间',
+    updateUser datetime default null comment '记录更新人',
+    status int(11) not null default 1 comment '记录状态：1-未删除，0-删除',
+    primary key (id)
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='任务线表';
+
