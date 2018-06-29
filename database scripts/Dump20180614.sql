@@ -129,3 +129,6 @@ create table taskLine(
     primary key (id)
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='任务线表';
 
+
+select column_name,data_type,column_comment from information_schema.columns where  table_name = 'task';
+select CONCAT('private String ',column_name,';') as b from information_schema.columns where  table_name = 'task';
