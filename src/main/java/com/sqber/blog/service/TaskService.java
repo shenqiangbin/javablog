@@ -18,7 +18,7 @@ public class TaskService {
 
 	public Task getById(String id) {
 
-		String sql = "select * from file where fileid = ? and status = 1";
+		String sql = "select * from task where id = ? and status = 1";
 		List<Object> params = new ArrayList<Object>();
 		params.add(id);
 		List<Task> files = sqlHelper.query(sql, params, Task.class);

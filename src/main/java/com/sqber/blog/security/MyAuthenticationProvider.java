@@ -17,8 +17,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 		String password_input = (String)authentication.getCredentials();
 		
 		UserDetails dbUserDetails = customUserDetailsService.loadUserByUsername(userName_input);
-		if(dbUserDetails==null || dbUserDetails.getPassword().equals(password_input))
-			throw new BadCredentialsException("用户名或密码错误");
+//		if(dbUserDetails==null || dbUserDetails.getPassword().equals(password_input))
+//			throw new BadCredentialsException("用户名或密码错误");
 		
 		//只要返回这个 Token 就代表用户登录了
 		return new UsernamePasswordAuthenticationToken(userName_input, password_input, dbUserDetails.getAuthorities());		
