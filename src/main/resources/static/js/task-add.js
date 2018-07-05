@@ -3,4 +3,8 @@ $(function(){
 	$.get(url,function(data){
 		console.log(data);
 	});
+	
+	$.get('/project/getAll',function(data){
+		console.log(data);
+	})
 });

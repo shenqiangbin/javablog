@@ -21,8 +21,42 @@
 					
   		<div style="margin-top:100px;">
   		  			 		
-			asdfasfasdf
-  		  			 		  	
+			<!--  title nvarchar(100) not null comment '任务标题',
+    taskType int not null comment '类型：0-需求 1-BUG',
+    taskStatus int not null comment '任务状态： 0-未开始，1-处理中，2-处理完成，3-处理不了',
+    
+    projectId int not null comment '所属项目',
+    moduleId int not null comment '所属模块',
+   
+	demandor varchar(100) not null comment '提出人',
+    assignTo varchar(100) not null comment '分配人',
+	solver varchar(100) not null comment '解决人',
+    
+    content nvarchar(1000) not null comment '任务内容',
+    
+	putTime datetime not null comment '提出时间',
+    
+    scheduledStart datetime not null comment '预计开始时间',
+    scheduledEnd datetime not null comment '预计结束时间',
+     -->
+    		任务标题：
+    		<input id="title" type="text" />
+    		<br />
+    		任务类型：
+    		<input type="radio" name="taskType" value="0" id="taskType-demand"/><label for="taskType-demand">需求</label>
+    		<input type="radio" name="taskType" value="1" id="taskType-bug"/><label for="taskType-bug">Bug</label>
+    		<br />
+    		任务状态：
+    		<input type="radio" name="taskStatus" value="0" id="taskStatus-no"/><label for="taskStatus-no">未开始</label>
+    		<input type="radio" name="taskStatus" value="1" id="taskStatus-ing"/><label for="taskStatus-ing">处理中</label>
+    		<input type="radio" name="taskStatus" value="2" id="taskStatus-done"/><label for="taskStatus-done">处理完成</label>
+    		<input type="radio" name="taskStatus" value="3" id="taskStatus-canot"/><label for="taskStatus-canot">处理不了</label>
+    		<br />
+  		  	所属项目：
+  		  	<select>
+			  <option value ="volvo">Volvo</option>			  
+			</select>
+			
   		</div>	
 	</div>
 	
