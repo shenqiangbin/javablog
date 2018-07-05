@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,21 +25,28 @@ public class ResultSetHelper {
 				// 此类要有默认的构造函数
 				T instance = type.newInstance();
 				Field[] fields = type.getDeclaredFields();
+				Field[] superFields = type.getSuperclass().getDeclaredFields();	
+				
+				List<Field> fieldList = new ArrayList<Field>();
+				fieldList.addAll(Arrays.asList(fields));
+				fieldList.addAll(Arrays.asList(superFields));
 
 				for (int i = 1; i <= columnCount; i++) {
 					String colName = md.getColumnName(i);
+					
 					Object val = resultSet.getObject(i);
 
-					for (Field field : fields) {
+					for (Field field : fieldList) {				
+						
 						if (field.getName().equalsIgnoreCase(colName)) {
 							field.setAccessible(true);
 							field.set(instance, val);
 						}
 					}
+										
 				}
 
 				list.add(instance);
-
 			}
 		}
 
