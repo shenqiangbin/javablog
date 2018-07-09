@@ -130,5 +130,50 @@ create table taskLine(
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='任务线表';
 
 
+
+
+
 select column_name,data_type,column_comment from information_schema.columns where  table_name = 'task';
 select CONCAT('private String ',column_name,';') as b from information_schema.columns where  table_name = 'task';
+
+
+
+drop table if exists user;
+create table user(
+	id int(11) not null auto_increment,
+	usercode varchar(50) not null unique,
+    password varchar(50) not null,
+    createTime datetime default null comment '记录创建时间',
+    createUser varchar(100) default null comment '记录创建人',
+    updateTime datetime default null comment '记录更新时间',
+    updateUser datetime default null comment '记录更新人',
+    status int(11) not null default 1 comment '记录状态：1-未删除，0-删除',
+    primary key (id)
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='用戶表';
+
+
+drop table if exists role;
+create table role(
+	id int(11) not null auto_increment,
+	roleCode varchar(50) not null unique,
+    roleName varchar(50) not null,
+    createTime datetime default null comment '记录创建时间',
+    createUser varchar(100) default null comment '记录创建人',
+    updateTime datetime default null comment '记录更新时间',
+    updateUser datetime default null comment '记录更新人',
+    status int(11) not null default 1 comment '记录状态：1-未删除，0-删除',
+    primary key (id)
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='角色表';
+
+drop table if exists role;
+create table userRole(
+	id int(11) not null auto_increment,
+    userCode varchar(50) not null,
+	roleCode varchar(50) not null,    
+    createTime datetime default null comment '记录创建时间',
+    createUser varchar(100) default null comment '记录创建人',
+    updateTime datetime default null comment '记录更新时间',
+    updateUser datetime default null comment '记录更新人',
+    status int(11) not null default 1 comment '记录状态：1-未删除，0-删除',
+    primary key (id)
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='用戶-角色表';

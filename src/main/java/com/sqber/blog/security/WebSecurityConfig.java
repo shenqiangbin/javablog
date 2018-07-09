@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 //参照：https://blog.csdn.net/u010324465/article/details/77196380
 //https://blog.csdn.net/hj7jay/article/details/51730284
@@ -16,13 +17,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private MyAuthenticationProvider作废 authenticationProvider;
 
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
+	
+	@Autowired
+    private MySecurityFilter mySecurityFilter;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 				
 		http	
+		.addFilterBefore(mySecurityFilter, FilterSecurityInterceptor.class)//在正确的位置添加我们自定义的过滤器
 		.authorizeRequests()
-			.antMatchers("/resources/**", "/signup", "/about","/task/**").permitAll()
+			.antMatchers("/resources/**", "/signup", "/about","/task/**","/project/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 		.formLogin().and()
@@ -39,11 +49,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 return new BCryptPasswordEncoder();
 	}
 	
-	@Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .inMemoryAuthentication()
-                .withUser("admin").password(new BCryptPasswordEncoder().encode("123")).roles("USER");
-    }
+//	@Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth
+//            .inMemoryAuthentication()
+//                .withUser("admin").password(new BCryptPasswordEncoder().encode("123")).roles("USER");
+//    }
 	
+	@Override
+	protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+		//builder.authenticationProvider(authenticationProvider);
+		builder.userDetailsService(customUserDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+	}
 }
