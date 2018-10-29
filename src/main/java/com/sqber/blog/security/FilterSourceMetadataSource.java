@@ -19,8 +19,8 @@ public class FilterSourceMetadataSource implements FilterInvocationSecurityMetad
         String requestUrl = ((FilterInvocation) object).getRequestUrl();
         System.out.println("用户请求的地址是：" + requestUrl);
 		
-		//return null; 无权限限制 
-		return SecurityConfig.createList("user","role2");
+		return null; //无权限限制 
+		//return SecurityConfig.createList("user","role2");
 	}
 
 	@Override

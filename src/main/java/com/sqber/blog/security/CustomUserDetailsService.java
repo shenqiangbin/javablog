@@ -29,18 +29,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-		//userName = "admin";
+		userName = "admin";
 		String password = "123";
 		
 		try {
 			
-			com.sqber.blog.model.User userDb = userService.getUserByUserCode(userName);
+			//com.sqber.blog.model.User userDb = userService.getUserByUserCode(userName);
 			
-			if(userDb == null)
-				throw new UsernameNotFoundException("用户名或密码不正确");
+//			if(userDb == null)
+//				throw new UsernameNotFoundException("用户名或密码不正确");
 			
 			//password from database
-			password = userDb.getPassword();
+			//password = userDb.getPassword();
 			
 			String encodePassword = new BCryptPasswordEncoder().encode(password);
 			List<GrantedAuthority> authorities = getAuthorities(userName);
@@ -59,13 +59,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-		//authorities.add(new SimpleGrantedAuthority("role_user"));
+		authorities.add(new SimpleGrantedAuthority("role_user"));
 
 		//data from database
-		List<Role> roles = roleService.getRolesByUserCode(userName);
-		if(roles != null) {
-			roles.forEach( r -> authorities.add(new SimpleGrantedAuthority(r.getRoleName())));
-		}
+//		List<Role> roles = roleService.getRolesByUserCode(userName);
+//		if(roles != null) {
+//			roles.forEach( r -> authorities.add(new SimpleGrantedAuthority(r.getRoleName())));
+//		}
 		
 		return authorities;
 	}
