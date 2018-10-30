@@ -41,8 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http	
 		.addFilterBefore(mySecurityFilter, FilterSecurityInterceptor.class)//在正确的位置添加我们自定义的过滤器
 		.authorizeRequests()
-			.antMatchers("/resources/**", "/account/**", "/about","/sites/**","/sites","/js/**").permitAll()
-			.anyRequest().authenticated()
+			.antMatchers("/backmgr/**").authenticated() //只有后台管理的需要登录，其他的访问不需要
 			.and()
 		.formLogin().loginPage("/account/login") //登录跳转的url
 		.and()
