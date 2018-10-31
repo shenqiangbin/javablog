@@ -13,6 +13,7 @@ import com.sqber.blog.base.PageResult;
 import com.sqber.blog.base.SQLHelper;
 import com.sqber.blog.dto.ResourceItem;
 import com.sqber.blog.dto.Sites;
+import com.sqber.blog.model.PagedResponse;
 
 
 @Controller
@@ -38,6 +39,14 @@ public class HomeController {
 		ResourceItem resourceItem = new ResourceItem();
 		resourceItem.setName("小明");
 		model.addAttribute("resourceItem",resourceItem);
+		
+		PagedResponse<Sites> pagedResponse = new PagedResponse<Sites>();
+		pagedResponse.setCurrentPage(1);
+		pagedResponse.setPageSize(10);
+		pagedResponse.setTotalCount(100);
+		pagedResponse.calTotalPage();
+		
+		model.addAttribute("pageResponse",pagedResponse);
 		
 		return "home/test";
 	}	

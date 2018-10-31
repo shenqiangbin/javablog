@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	
+	<div th:fragment="page(pageResponse)">  
+  		
+  			<a th:if="${pageResponse.currentPage!=1}" 
+  				th:href="@{'/user/touser?pageIndex='+${pageResponse.currentPage-1}}">上一页</a>
+  			<a th:if="${pageResponse.currentPage==1}" href="javascript:return false;" onclick="return false"></a>
+  			<th:block th:each="page : ${pageResponse.pagedList}">
+  				<a th:if="${page==0}" href="javascript:void(0);">...</a>
+  				<a th:if="${page!=0}" th:href="@{'/user/touser?pageIndex='+${page}}" th:text="${page}"></a>
+  			</th:block>
+  			<a th:if="${pageResponse.currentPage!=totalPage}" 
+  				th:href="@{'/user/touser?pageIndex='+${pageResponse.currentPage+1}}">下一页</a>
+  			<a th:if="${pageResponse.currentPage==totalPage}" href="javascript:return false;" onclick="return false"></a>
+
+  		</div>
+  		
+	</div>
+	
+</body>
+</html>
