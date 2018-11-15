@@ -72,6 +72,7 @@ public class HomeController {
 		
 		model.addAttribute("items", list);
 		model.addAttribute("count", count);
+		model.addAttribute("totalPage", result.getTotalPage());		
 		model.addAttribute("currentPage",currentPage);
 		
 		return "home/sites";

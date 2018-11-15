@@ -51,9 +51,11 @@
   	
   		<div style='margin-bottom:20px'>
   			<a th:if="${currentPage>1}" href="/" th:href="${'/sites/'+(currentPage-1)}">上一页</a>
-	  		<a href="/" th:href="${'/sites/'+(currentPage+1)}">下一页</a>
+	  		<a th:if="${currentPage<totalPage}" href="/" th:href="${'/sites/'+(currentPage+1)}">下一页</a>
 	  		当前：第 <span th:text="${currentPage}" style='font-weight:bolder;'></span> 页
+	  		总页数：<span th:text="${totalPage}" style='font-weight:bolder;'></span>	
 	  		总条数：<span th:text="${count}" style='font-weight:bolder;'></span>	  	
+	  		  		  		
   		</div>
   		
   		<div style='text-align:justify'>
