@@ -3,15 +3,12 @@ package com.sqber.blog.base;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sqber.blog.config.MySQLDataSourceConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Component
@@ -22,7 +19,7 @@ public class SQLHelper {
 		int result = -1;
 
 		try {
-			HikariDataSource dataSource = getDataSource();
+			HikariDataSource dataSource = DataSource.getInstance();
 			Connection connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -54,7 +51,7 @@ public class SQLHelper {
 		int result = -1;
 		try {
 
-			HikariDataSource dataSource = getDataSource();
+			HikariDataSource dataSource = DataSource.getInstance();
 			Connection connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -82,7 +79,7 @@ public class SQLHelper {
 	public <T> List<T> query(String sql, List<Object> params, Class<T> type) {
 		try {
 			/* HikariDataSource 是需要关闭的 */
-			HikariDataSource dataSource = getDataSource();
+			HikariDataSource dataSource = DataSource.getInstance();
 			Connection connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -117,7 +114,7 @@ public class SQLHelper {
 		String result = null;
 		try {
 			/* HikariDataSource 是需要关闭的 */
-			HikariDataSource dataSource = getDataSource();
+			HikariDataSource dataSource = DataSource.getInstance();
 			Connection connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -181,22 +178,5 @@ public class SQLHelper {
 			}
 		}
 		return true;
-	}
-	
-	@Autowired
-	private MySQLDataSourceConfig config;
-	
-	private HikariDataSource getDataSource() throws SQLException {
-
-//		HikariConfig config = new HikariConfig();
-//
-//		config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/javablog?useUnicode=true&characterEncoding=utf8&useSSL=false");
-//		config.setUsername("root");
-//		config.setPassword("123456");
-//		config.addDataSourceProperty("cachePrepStmts", "true");
-//		config.addDataSourceProperty("prepStmtCacheSize", "250");
-//		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-
-		return new HikariDataSource(config);
 	}
 }
