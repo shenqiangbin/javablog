@@ -37,9 +37,7 @@ public class SQLHelper {
 			}
 
 			if (connection != null && !connection.isClosed())
-				connection.close();
-			if (dataSource != null && !dataSource.isClosed())
-				dataSource.close();
+				connection.close();			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,9 +63,7 @@ public class SQLHelper {
 			result = statement.executeUpdate();
 			
 			if (connection != null && !connection.isClosed())
-				connection.close();
-			if (dataSource != null && !dataSource.isClosed())
-				dataSource.close();
+				connection.close();			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,8 +91,6 @@ public class SQLHelper {
 
 			if (connection != null && !connection.isClosed())
 				connection.close();
-			if (dataSource != null && !dataSource.isClosed())
-				dataSource.close();
 
 			return list;
 
@@ -131,8 +125,6 @@ public class SQLHelper {
 
 			if (connection != null && !connection.isClosed())
 				connection.close();
-			if (dataSource != null && !dataSource.isClosed())
-				dataSource.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -143,12 +135,13 @@ public class SQLHelper {
 
 	public <T> PageResult<T> queryPage(String sql, List<Object> params, int currentPage, int pageSize,
 			Class<T> type) {
-
+		
 		PageResult<T> result = new PageResult<T>();
 
 		int startIndex = (currentPage - 1) * pageSize;
 
-		String querySql = MessageFormat.format("{0} limit {1},{2}", sql, startIndex, pageSize);
+		String querySql = String.format("%s limit %s,%s", sql, startIndex, pageSize);
+		
 		List<T> models = query(querySql, params, type);
 		result.setData(models);
 
