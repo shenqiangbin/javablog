@@ -106,8 +106,7 @@ public class SQLHelper {
 	 */
 	public String executeScalar(String sql, List<Object> params) {
 		String result = null;
-		try {
-			/* HikariDataSource 是需要关闭的 */
+		try {			
 			HikariDataSource dataSource = DataSource.getInstance();
 			Connection connection = dataSource.getConnection();
 
