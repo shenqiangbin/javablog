@@ -9,17 +9,24 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.sqber.blog.config.MySQLDataSourceConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Component
 public class SQLHelper {
 
+	private final HikariDataSource mysqlDataSource;
+	
+	public SQLHelper(MySQLDataSourceConfig mysqlDataSourceConfig) {
+		mysqlDataSource = new HikariDataSource(mysqlDataSourceConfig);
+	}
+	
 	public int add(String sql, List<Object> params) {
 
 		int result = -1;
 
 		try {
-			HikariDataSource dataSource = DataSource.getInstance();
+			HikariDataSource dataSource = mysqlDataSource;
 			Connection connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -49,7 +56,7 @@ public class SQLHelper {
 		int result = -1;
 		try {
 
-			HikariDataSource dataSource = DataSource.getInstance();
+			HikariDataSource dataSource = mysqlDataSource;
 			Connection connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -74,8 +81,7 @@ public class SQLHelper {
 
 	public <T> List<T> query(String sql, List<Object> params, Class<T> type) {
 		try {
-			/* HikariDataSource 是需要关闭的 */
-			HikariDataSource dataSource = DataSource.getInstance();
+			HikariDataSource dataSource = mysqlDataSource;
 			Connection connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -107,7 +113,7 @@ public class SQLHelper {
 	public String executeScalar(String sql, List<Object> params) {
 		String result = null;
 		try {			
-			HikariDataSource dataSource = DataSource.getInstance();
+			HikariDataSource dataSource = mysqlDataSource;
 			Connection connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql);
