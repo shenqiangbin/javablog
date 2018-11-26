@@ -23,6 +23,7 @@
             <textarea style="display:none;" th:text="${content}"></textarea>
         </div>
 
+		<input type='hidden' th:name='${_csrf.parameterName}' th:value="${_csrf.token}" />
         <button id='btnSave'>保存</button>
 	</div>
 	
@@ -43,6 +44,10 @@
     		imageUploadURL : "../article/uploadImage", 
             path    : "/third/editor.md/lib/", 
             emoji: false,
+            tocm: true,  // Using [TOCM]  
+            tex : true,  // 开启科学公式TeX语言支持
+            flowChart  : true,  
+            sequenceDiagram : true,  
             toolbarIcons : function() {
         		// Or return editormd.toolbarModes[name]; // full, simple, mini  
         		// Using "||" set icons align right.  
@@ -53,8 +58,26 @@
         $("#btnSave").click(function(){
         	var content = testEditor.getMarkdown();
         	console.log(content);
+        	
+        	var postData = { "_csrf" : $("input[name=_csrf]").val() };
+        	
+        	$.ajax({
+        		type : "POST",
+        		url : "/article/add1",
+        		data : postData,
+        		success : function(data) {
+        			console.log("data");
+        			console.log(data);
+        		},
+        		error : function(msg) {
+        			alert(msg);
+        			console.log(msg);
+        		}
+        	});
+        	
         });
     });
 </script>
+<script src='/js/article-add.js'></script>
 
 </html>

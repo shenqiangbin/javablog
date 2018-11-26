@@ -12,8 +12,13 @@
     
     <!-- Bootstrap CSS -->    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" href="/third/editor.md/css/editormd.min.css" /> 
-       
+    <link rel="stylesheet" href="/third/editor.md/css/editormd.preview.css" />
+     <style>            
+            .editormd-html-preview {
+                width: 90%;
+                margin: 0 auto;
+            }
+      </style>
 </head>
 
 <body>
@@ -22,37 +27,32 @@
   		<div id="editormd">
             <textarea style="display:none;" th:text="${content}"></textarea>
         </div>
-
-        <button id='btnSave'>保存</button>
 	</div>
 	
 </body>
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/third/editor.md/lib/marked.min.js"></script>
+<script src="/third/editor.md/lib/prettify.min.js"></script>
+
+<script src="/third/editor.md/lib/raphael.min.js"></script>
+<script src="/third/editor.md/lib/underscore.min.js"></script>
+<script src="/third/editor.md/lib/sequence-diagram.min.js"></script>
+<script src="/third/editor.md/lib/flowchart.min.js"></script>
+<script src="/third/editor.md/lib/jquery.flowchart.min.js"></script>
 <script src="/third/editor.md/editormd.min.js"></script>
+
 <script type="text/javascript">
 	var testEditor;
     $(function() {
-        testEditor = editormd("editormd", {
-        	placeholder : "开始编辑...",  
-            width   : "90%",
-            height  : 640,
-            syncScrolling : "single",
-            imageUpload: true,//图片上传功能  
-            imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],  
-    		imageUploadURL : "../article/uploadImage", 
-            path    : "/third/editor.md/lib/", 
-            emoji: false,
-            toolbarIcons : function() {
-        		// Or return editormd.toolbarModes[name]; // full, simple, mini  
-        		// Using "||" set icons align right.  
-        		return ["undo","redo","|","bold","italic","quote","uppercase","lowercase","|","h1","h2","h3","h4","|","list-ul","list-ol","hr","|","link","image","code","code-block","table","html-entities","|","watch","preview","fullscreen","clear","|","help"]  
-    		},  
-        });
-
-        $("#btnSave").click(function(){
-        	var content = testEditor.getMarkdown();
-        	console.log(content);
+    	testEditor = editormd.markdownToHTML("editormd", {
+            htmlDecode  : "style,script,iframe",  // you can filter tags decode
+            emoji : false,
+            taskList : true,
+            tocm : true,  // Using [TOCM]  
+            tex : true,  // 默认不解析
+            flowChart  : true,  // 默认不解析
+            sequenceDiagram : true,  // 默认不解析
         });
     });
 </script>
