@@ -1,7 +1,9 @@
 package com.sqber.blog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.sqber.blog.model.Pic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +27,32 @@ public class HomeController {
 	@GetMapping("/")
 	public String index(Model model) {
 							
-		String sql = "select * from ResourceItem where status = 1";
-		List<ResourceItem> list = SQLHelper.query(sql, null, ResourceItem.class);
-		
-		model.addAttribute("items", list);	
+		String sql = "SELECT url,name FROM javablog.pic where status = 1 ORDER BY  RAND() LIMIT 10";
+		List<Pic> list = SQLHelper.query(sql, null, Pic.class);
+
+//		for (Pic item:list) {
+//			String url = item.getUrl();
+//			String subStr = url.substring(0,url.lastIndexOf("."));
+//			String ext = url.substring(url.lastIndexOf("."));
+//			String newUrl = subStr+"229"+ext;
+//			item.setUrl(newUrl);
+//		}
+
+//		List<List<Pic>> listArr = new ArrayList<>();
+//
+//		int lineNum = 5;
+//
+//		for(int i=0; i<list.size(); i+=lineNum){
+//
+//			List<Pic> pics = new ArrayList<>();
+//
+//			for(int j=0; j<5; j++)
+//				pics.add(list.get(i+j));
+//
+//			listArr.add(pics);
+//		}
+
+		model.addAttribute("items", list);
 		
 		return "home/index";
 	}

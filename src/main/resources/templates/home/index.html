@@ -3,16 +3,16 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="SQBER的博客,Java资源" />
-	<meta name="keywords" content="SQBER的博客,sqber,Java资源,Java" />
+	<meta name="description" content="美女写真,年轻貌美写真图" />
+	<meta name="keywords" content="美女,写真" />
 		
 	<link rel="icon" href="/favicon.ico" type="image/x-icon" />    
 				
-    <title>Java资源</title>
+    <title>美女写真</title>
     
     <!-- Bootstrap CSS -->    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-   
+
     
     <style>
     	a{    
@@ -26,8 +26,31 @@
 		    background-color: #f9f9f9;
 		    border-top: .05rem solid #e5e5e5;
 		}
-		
-    </style>     
+
+		.box{
+			width: 19%;
+			/* margin-right: 2%; */
+			display: inline-block;
+			border: 1px solid red;
+			margin-bottom: 20px;
+		}
+		img{
+			width: 100%;
+			height: 323px;
+
+			-webkit-transition: all .3s ease-in-out;
+			-moz-transition: all .3s ease-in-out;
+			transition: all .3s ease-in-out;
+		}
+
+		.col{margin-bottom: 20px;}
+		 img:hover{
+			-webkit-transform: scale(1.03);
+			-moz-transform: scale(1.03);
+			transform: scale(1.03);
+		}
+
+    </style>
     
     <script>
 		var _hmt = _hmt || [];
@@ -46,27 +69,26 @@
 	<div class="container">
 		<div class="h1" style="margin-top: 21px"></div>
 		<div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">		
-			<h1 class="display-4 font-italic text-center">Java资源</h1>
+			<h1 class="display-4 font-italic text-center">美女写真</h1>
 		</div>
   	
-  		<div>
-	  		<table class="table">		  
-			  <tbody>
-			    <tr th:each="item : ${items}">		      
-			      <td th:text="${item.name}">Mark</td>
-			      <td><a href="/" th:href="${item.url}" th:text="${item.url}" target="_blank">view</a></td>		      
-			    </tr>    
-			  </tbody>
-			</table>
+  		<div class="row" th:each="i:${#numbers.sequence(0,(items.size()/5)-1)}">
+			<div th:each="k:${#numbers.sequence(0,4)}" class="col">
+				<a style="position: relative;
+    margin-bottom: 10px;
+    display: block;
+    overflow: hidden;">
+					<img th:src="${items[i*5+k].url}"></img>
+				</a>
+				<!--<div th:text="${i*5+k}"></div>-->
+			</div>
   		</div>
+
 	</div>
 	
 	<footer class="blog-footer">
-      <p>前端 by <a href="https://getbootstrap.com/">Bootstrap</a> 后台 by <a href="/">Java</a> <a href="/">thymeleaf</a></p>
-      <p>
-        所有者 <a href="http://www.sqber.com">sqber</a>
-      </p>
-      <p>2017-2018 冀ICP备17029815</p>
+      <p>说明：本站所有资源均来自互联网公开资源，本站不参与拍摄和资源存储</p>
+      <p>冀ICP备17029815</p>
     </footer>
 	
 </body>
