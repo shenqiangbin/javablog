@@ -1,9 +1,6 @@
 package com.sqber.blog.base;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -25,9 +22,10 @@ public class SQLHelper {
 
 		int result = -1;
 
+		HikariDataSource dataSource = mysqlDataSource;
+		Connection connection = null;
 		try {
-			HikariDataSource dataSource = mysqlDataSource;
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			if (params != null) {
@@ -43,22 +41,22 @@ public class SQLHelper {
 					result = resultSet.getInt(1);
 			}
 
-			if (connection != null && !connection.isClosed())
-				connection.close();			
-
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			colseConn(connection);
 		}
 		return result;
 	}	
 
 	public int update(String sql, List<Object> params) {
 		int result = -1;
+
+		HikariDataSource dataSource = mysqlDataSource;
+		Connection connection = null;
+
 		try {
-
-			HikariDataSource dataSource = mysqlDataSource;
-			Connection connection = dataSource.getConnection();
-
+			connection = dataSource.getConnection();
 			PreparedStatement statement = connection.prepareStatement(sql);
 
 			if (params != null) {
@@ -68,21 +66,23 @@ public class SQLHelper {
 			}
 
 			result = statement.executeUpdate();
-			
-			if (connection != null && !connection.isClosed())
-				connection.close();			
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			colseConn(connection);
 		}
 		
 		return result;
 	}
 
 	public <T> List<T> query(String sql, List<Object> params, Class<T> type) {
+
+		HikariDataSource dataSource = mysqlDataSource;
+		Connection connection = null;
+
 		try {
-			HikariDataSource dataSource = mysqlDataSource;
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -95,13 +95,12 @@ public class SQLHelper {
 			ResultSet resultSet = statement.executeQuery();
 			List<T> list = ResultSetHelper.toList(resultSet, type);
 
-			if (connection != null && !connection.isClosed())
-				connection.close();
-
 			return list;
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			colseConn(connection);
 		}
 
 		return null;
@@ -112,9 +111,11 @@ public class SQLHelper {
 	 */
 	public String executeScalar(String sql, List<Object> params) {
 		String result = null;
+		HikariDataSource dataSource = mysqlDataSource;
+		Connection connection = null;
+
 		try {			
-			HikariDataSource dataSource = mysqlDataSource;
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -128,11 +129,10 @@ public class SQLHelper {
 			if (resultSet != null && resultSet.next())
 				result = resultSet.getString(1);
 
-			if (connection != null && !connection.isClosed())
-				connection.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			colseConn(connection);
 		}
 
 		return result;
@@ -176,5 +176,17 @@ public class SQLHelper {
 			}
 		}
 		return true;
+	}
+
+	private void colseConn(Connection connection){
+		if (connection != null) {
+			try {
+				if(!connection.isClosed())
+					connection.close();
+			} catch (SQLException e) {
+				System.out.println("连接关闭失败");
+				e.printStackTrace();
+			}
+		}
 	}
 }

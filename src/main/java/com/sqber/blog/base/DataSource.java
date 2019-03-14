@@ -27,6 +27,7 @@ public class DataSource {
 			config.addDataSourceProperty("cachePrepStmts", "true");
 			config.addDataSourceProperty("prepStmtCacheSize", "250");
 			config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+			config.setLeakDetectionThreshold(60*1000);
 	
 			//System.out.println("mmconfig" + mmconfig);
 			System.out.println("------------------new datasource--------------------");
