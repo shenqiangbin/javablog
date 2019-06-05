@@ -13,10 +13,7 @@ import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
@@ -31,11 +28,15 @@ public class WeiXinController {
     @Autowired
     private SQLHelper SQLHelper;
 
+    /*
+    * 微信请求地址demo：
+    * weixin?signature=7ae459e571257c69d7889c56caf98b708055fe94&timestamp=1559737769&nonce=1498373320&openid=ou2PCuGa--dDUSlmYmShuDoAPIEM
+    * */
     @GetMapping("/weixin")
-    public String index(String signature,
-                        String timestamp,
-                        String nonce,
-                        String echostr) {
+    public String index(@RequestParam("signature") String signature,
+                        @RequestParam("timestamp") String timestamp,
+                        @RequestParam("nonce") String nonce,
+                        @RequestParam("echostr") String echostr) {
         System.out.println("weixin");
         System.out.println(signature);
         System.out.println(timestamp);
@@ -44,8 +45,8 @@ public class WeiXinController {
 
         String[] arr = new String[]{WeChatContant.TOKEN, timestamp, nonce};
         // 将token、timestamp、nonce三个参数进行字典序排序
-         Arrays.sort(arr);
-        //sort(arr);
+         //Arrays.sort(arr);
+        sort(arr);
         StringBuilder content = new StringBuilder();
         for (int i = 0; i < arr.length; i++) {
             content.append(arr[i]);
