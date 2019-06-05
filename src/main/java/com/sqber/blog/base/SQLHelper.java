@@ -151,7 +151,7 @@ public class SQLHelper {
 		result.setData(models);
 
 		// 正则，将select 和 from 中间的字符串替换成 count(0);
-		String countSql = MessageFormat.format("select count(0) from ({0})t ", sql);
+		String countSql = String.format("select count(0) from (%s)t ", sql);
 		String countStr = executeScalar(countSql, params);
 		int countVal = 0;
 		if (!isBlank(countStr))
