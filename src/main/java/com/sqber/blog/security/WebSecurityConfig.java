@@ -45,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 		.formLogin().loginPage("/account/login") //登录跳转的url
 		.and()
+				.csrf().disable()
 		.httpBasic();
 	}
 	
