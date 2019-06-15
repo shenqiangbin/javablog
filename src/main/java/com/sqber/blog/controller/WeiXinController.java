@@ -25,7 +25,7 @@ import java.util.*;
 
 
 @Controller
-public class WeiXinController1 {
+public class WeiXinController {
 
     @Autowired
     private SQLHelper SQLHelper;
