@@ -7,8 +7,10 @@ import com.sqber.blog.base.SQLHelper;
 import com.sqber.blog.dto.ResourceItem;
 import com.sqber.blog.dto.Sites;
 import com.sqber.blog.model.ActiveCode;
+import com.sqber.blog.model.Cartoon;
 import com.sqber.blog.model.PagedResponse;
 import com.sqber.blog.model.Pic;
+import com.sqber.blog.service.CartoonService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,8 @@ public class WeiXinController {
 
     @Autowired
     private SQLHelper SQLHelper;
+    @Autowired
+    private CartoonService cartoonService;
 
     @ResponseBody
     @GetMapping("/weixin")
@@ -81,18 +85,38 @@ public class WeiXinController {
             //这里只处理文本消息
             if (MsgType.equalsIgnoreCase("text")) {
 
-//                String Content = map.get("Content");
-//                String MsgId = map.get("MsgId");
-//
-//                Message message = new Message();
-//                message.setFromUserName(ToUserName);
-//                message.setToUserName(FromUserName);
-//                message.setContent("你说啥");
-//                message.setMsgId(MsgId);
-//                message.setMsgType("text");
-//                message.setCreateTime(new Date().getTime());
-//
-//                str = MessageUtil.objectToXml(message);
+                String Content = map.get("Content");
+                String MsgId = map.get("MsgId");
+
+                String replyContent = "";
+                if (Content.equalsIgnoreCase("动漫进度")) {
+                    replyContent = cartoonService.getOverview();
+                } else if (Content.startsWith("看")) {
+                    String key = Content.replace("看", "");
+                    List<Cartoon> cartoons = cartoonService.getByName(key);
+                    if (cartoons != null && cartoons.size() > 0) {
+                        StringBuilder builder = new StringBuilder("关于【" + key + "】找到的动漫有：\r\n");
+                        for (Cartoon c : cartoons) {
+                            String href = "<a href='http://java.sqber.com/cartoon/" + c.getId() + "'>" + c.getName() + "</a>";
+                            builder.append(href + "\r\n");
+                        }
+                        replyContent = builder.toString();
+                    } else {
+                        replyContent = "此动漫正在紧急搜罗中，请过几天再来查看...";
+                    }
+                } else {
+                    replyContent = "帮助信息：\r\n 1、回复\"看\"加动漫名称可以观看动漫，比如回复 \"看斗罗大陆\" ";
+                }
+
+                Message message = new Message();
+                message.setFromUserName(ToUserName);
+                message.setToUserName(FromUserName);
+                message.setContent(replyContent);
+                message.setMsgId(MsgId);
+                message.setMsgType("text");
+                message.setCreateTime(new Date().getTime());
+
+                str = MessageUtil.objectToXml(message);
 
             } else if (MsgType.equalsIgnoreCase("event")) {
 
@@ -101,7 +125,7 @@ public class WeiXinController {
                 String replay = "none";
                 if (Event.equalsIgnoreCase("subscribe")) {
                     replay = "订阅";
-                    replay = getReplayContent(FromUserName,ToUserName);
+                    replay = getReplayContent(FromUserName, ToUserName);
                 } else if (Event.equalsIgnoreCase("unsubscribe")) {
                     replay = "取消订阅";
                 }
@@ -130,15 +154,15 @@ public class WeiXinController {
 
     }
 
-    private String getReplayContent(String fromUserName,String toUserName){
+    private String getReplayContent(String fromUserName, String toUserName) {
 
         // fromUesrName -- 用户
         // toUserName -- 公众号
 
         //先从库中查一遍，是否已经有了。
-        String code = getCode(fromUserName,toUserName);
+        String code = getCode(fromUserName, toUserName);
 
-        if(StringUtils.isEmptyOrWhitespace(code)){
+        if (StringUtils.isEmptyOrWhitespace(code)) {
             String sql = "SELECT id,code FROM javablog.activecode where status = 1 and publicAccount = ? and ISNULL(user) LIMIT 1";
 
             log(sql + toUserName);
@@ -147,51 +171,51 @@ public class WeiXinController {
             params.add(toUserName);
 
             List<ActiveCode> models = SQLHelper.query(sql, params, ActiveCode.class);
-            if(models.size()==1){
+            if (models.size() == 1) {
 
                 code = models.get(0).getCode();
                 int id = models.get(0).getId();
 
-                String updateSql = String.format("update activecode set user = '%s',userGetCodeTime=now() where id = %s and ISNULL(user)",fromUserName,id);
+                String updateSql = String.format("update activecode set user = '%s',userGetCodeTime=now() where id = %s and ISNULL(user)", fromUserName, id);
 
                 log(updateSql);
 
-                int result = SQLHelper.update(updateSql,null);
-                log(updateSql + " 更新结果： "+result);
+                int result = SQLHelper.update(updateSql, null);
+                log(updateSql + " 更新结果： " + result);
             }
         }
 
 
-        if(StringUtils.isEmptyOrWhitespace(code)){
+        if (StringUtils.isEmptyOrWhitespace(code)) {
             return "欢迎订阅";
-        }else{
-            return "欢迎订阅：赠送激活码一枚 "+ code;
+        } else {
+            return "欢迎订阅：赠送激活码一枚 " + code;
         }
 
     }
 
-    private String getCode(String fromUserName,String toUserName){
+    private String getCode(String fromUserName, String toUserName) {
         String sql = "SELECT id,code FROM javablog.activecode where status = 1 and publicAccount = ? and user = ? LIMIT 1";
         List<Object> params = new ArrayList<Object>();
         params.add(toUserName);
         params.add(fromUserName);
 
         List<ActiveCode> models = SQLHelper.query(sql, params, ActiveCode.class);
-        if(models.size()==1){
-            return  models.get(0).getCode();
-        }else{
+        if (models.size() == 1) {
+            return models.get(0).getCode();
+        } else {
             return null;
         }
     }
 
-    private void log(String content){
+    private void log(String content) {
 
         String sql = "insert log(content,time) values(?,now())";
 
         List<Object> params = new ArrayList<Object>();
         params.add(content);
 
-        SQLHelper.add(sql,params);
+        SQLHelper.add(sql, params);
     }
 
 }

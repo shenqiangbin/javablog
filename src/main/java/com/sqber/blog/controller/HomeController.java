@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sqber.blog.model.Pic;
+import com.sqber.blog.service.CartoonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,8 @@ public class HomeController {
 	
 	@Autowired
 	private SQLHelper SQLHelper;
+	@Autowired
+	private CartoonService cartoonService;
 	
 	@GetMapping("/")
 	public String index(Model model) {
@@ -59,7 +62,10 @@ public class HomeController {
 	
 	@GetMapping("/test")
 	public String test(Model model) {
-		
+
+		cartoonService.getByName("看斗罗大陆".replace("看", ""));
+		String val = cartoonService.getOverview();
+
 		ResourceItem resourceItem = new ResourceItem();
 		resourceItem.setName("小明");
 		model.addAttribute("resourceItem",resourceItem);
