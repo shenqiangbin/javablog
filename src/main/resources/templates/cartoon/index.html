@@ -106,7 +106,7 @@
         window.location.href = '/cartoon/' + $(item).attr("abc");
     }
     function search() {
-        window.location.href = '/cartoon?name=' + $("input").val().trim();
+        window.location.href = '/cartoon?name=' + encodeURIComponent($("input").val().trim());
     }
 </script>
 

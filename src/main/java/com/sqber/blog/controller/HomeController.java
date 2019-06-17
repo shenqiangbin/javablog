@@ -27,7 +27,7 @@ public class HomeController {
 	@Autowired
 	private CartoonService cartoonService;
 	
-	@GetMapping("/")
+	@GetMapping("/a")
 	public String index(Model model) {
 							
 		String sql = "SELECT url,name FROM javablog.pic where status = 1 ORDER BY  RAND() LIMIT 10";

@@ -1,5 +1,12 @@
 server:
-  port: 8003
+    port: 8003
+    tomcat:
+        uri-encoding: UTF-8
+
+spring:
+  http:
+    encoding:
+      charset: UTF-8
   
 datasource:
   mysql:

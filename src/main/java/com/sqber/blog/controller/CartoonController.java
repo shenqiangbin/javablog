@@ -22,8 +22,10 @@ public class CartoonController {
     @Autowired
     private CartoonService cartoonService;
 
-    @GetMapping(value = {"/cartoon"})
+    @GetMapping(value = {"/cartoon","/"})
     public String index(Model model, String name) {
+
+        System.out.println(name);
 
         List<Cartoon> cartoons = new ArrayList<>();
 
