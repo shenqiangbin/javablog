@@ -1,14 +1,8 @@
 package com.sqber.blog.controller;
 
 import com.mysql.jdbc.StringUtils;
-import com.sqber.blog.base.PageResult;
-import com.sqber.blog.base.SQLHelper;
-import com.sqber.blog.dto.ResourceItem;
-import com.sqber.blog.dto.Sites;
 import com.sqber.blog.model.Cartoon;
 import com.sqber.blog.model.CartoonJi;
-import com.sqber.blog.model.PagedResponse;
-import com.sqber.blog.model.Pic;
 import com.sqber.blog.service.CartoonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +21,21 @@ public class CartoonController {
 
     @Autowired
     private CartoonService cartoonService;
+
+    @GetMapping(value = {"/cartoon"})
+    public String index(Model model, String name) {
+
+        List<Cartoon> cartoons = new ArrayList<>();
+
+        if (!StringUtils.isNullOrEmpty(name)) {
+            cartoons = cartoonService.getByName(name);
+        }
+
+        model.addAttribute("name", name);
+        model.addAttribute("items", cartoons);
+
+        return "cartoon/index";
+    }
 
 
     @GetMapping(value = {"/cartoon/{id}"})

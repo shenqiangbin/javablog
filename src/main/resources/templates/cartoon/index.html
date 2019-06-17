@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="刨一刨,全网搜,影视,动漫"/>
+    <meta name="keywords" content="刨一刨,全网搜,影视,动漫"/>
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+
+    <title text="刨一刨"></title>
+
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <style>
+        #if1 {
+            border: 1px solid gray;
+            width: 100%;
+            height: 700px;
+            border-radius: 2px;
+        }
+
+        @media screen and (max-width: 600px) {
+            /*当屏幕尺寸小于600px时，应用下面的CSS样式*/
+            #if1 {
+                border: 1px solid gray;
+                width: 100%;
+                height: 300px;
+                border-radius: 2px;
+            }
+        }
+
+        .mycar{
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            cursor:pointer;
+        }
+        .mycar:hover{
+            /*background-color: blue;*/
+            -webkit-transform: scale(1.03);
+            -moz-transform: scale(1.03);
+            transform: scale(1.03);
+        }
+
+        .blog-footer {
+            padding: 2.5rem 0;
+            color: #999;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-top: .05rem solid #e5e5e5;
+        }
+
+    </style>
+
+    <script>
+
+    </script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div style="text-align:center;    padding-top: 50px;">
+        <h1>刨一刨</h1>
+        <div>全网影视，动漫搜索</div>
+
+        <div class="input-group mb-3" style="width: 500px;margin: 20px auto 20px;">
+            <input type="text" class="form-control" placeholder="请输入内容..." th:value="${name}" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button" id="button-addon2" onclick="search()">刨一刨</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <div th:each="item : ${items}" class="mycar" style="" onclick="go(this)" th:abc="${item.id}">
+            <div class="card" style="width: 18rem;">
+                <img th:src="${item.img}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h6 class="card-title" th:text="${item.name}"></h6>
+                </div>
+            </div>
+        </div>
+        <div th:if="${items.size()==0 && name!=null}" style="margin: 74px;">
+            <h4>暂无相关内容</h4>
+        </div>
+    </div>
+
+</div>
+
+<footer class="blog-footer">
+    <p>免责声明：本站为在线搜索功能，所搜资源均来自互联网公开资源，不对内容负责。</p>
+    <p>冀ICP备17029815</p>
+</footer>
+
+
+
+<script>
+    function go(item) {
+        window.location.href = '/cartoon/' + $(item).attr("abc");
+    }
+    function search() {
+        window.location.href = '/cartoon?name=' + $("input").val().trim();
+    }
+</script>
+
+</body>
+
+
+</html>
