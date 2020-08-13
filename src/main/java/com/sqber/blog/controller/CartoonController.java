@@ -1,6 +1,6 @@
 package com.sqber.blog.controller;
 
-import com.mysql.jdbc.StringUtils;
+import com.mysql.cj.util.StringUtils;
 import com.sqber.blog.model.Cartoon;
 import com.sqber.blog.model.CartoonJi;
 import com.sqber.blog.service.CartoonService;
