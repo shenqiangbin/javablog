@@ -4,6 +4,7 @@ import com.sqber.blog.base.SQLHelper;
 import com.sqber.blog.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +25,16 @@ public class VideoService {
         return null;
     }
 
-    public List<Video> getByName(String cartoonName) {
+    public List<Video> getByName(String name) {
         String sql = "SELECT * from video where status = 1";
-        List<Object> params = new ArrayList<>();
-        params.add("%" + cartoonName + "%");
 
-        List<Video> list = sqlHelper.query(sql, null, Video.class);
+        List<Object> params = new ArrayList<>();
+        if(!StringUtils.isEmpty(name)){
+            sql += " and name like ?";
+            params.add("%" + name + "%");
+        }
+
+        List<Video> list = sqlHelper.query(sql, params, Video.class);
         return list;
     }
 
