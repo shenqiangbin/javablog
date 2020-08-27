@@ -3,6 +3,7 @@ package com.sqber.blog.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.util.StringUtils;
 import com.sqber.blog.model.Pic;
 import com.sqber.blog.service.CartoonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.mysql.jdbc.StringUtils;
 import com.sqber.blog.base.PageResult;
 import com.sqber.blog.base.SQLHelper;
 import com.sqber.blog.dto.ResourceItem;

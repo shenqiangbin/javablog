@@ -212,3 +212,18 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+target/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+/.project
+/.settings
+/.classpath
+/.idea
+/.DS_Store
+/bin/
