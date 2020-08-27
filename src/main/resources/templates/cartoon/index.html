@@ -108,6 +108,17 @@
     function search() {
         window.location.href = '/cartoon?name=' + encodeURIComponent($("input").val().trim());
     }
+    $(document).bind("keypress", function (e) {
+        // 兼容FF和IE和Opera
+        var theEvent = e || window.event;
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if (code == 13) {
+            e.preventDefault();
+            //回车执行查询
+            search();
+        }
+    });
+
 </script>
 
 </body>

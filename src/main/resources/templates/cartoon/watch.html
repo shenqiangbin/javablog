@@ -11,9 +11,9 @@
     <title th:text="${'观看'+title}"></title>
 
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         #if1{
@@ -40,32 +40,53 @@
 
 <body>
 
-<div class="container">
+<div class="container-fluid">
 
     <h2 th:text="${title}" style="margin-top: 20px;"></h2>
     <div style="margin: 11px 0px;color: gray;">
         来源有<span th:text="${lineNum}"></span>个线路，无法播放时，可切换线路。
     </div>
 
-    <iframe id="if1" src=""></iframe>
+    <div class="row">
+        <div class="col-md-9">
+            <iframe id="if1" src=""></iframe>
+        </div>
+        <div class="col-md-3" style="height: 700px; overflow-y: scroll">
 
-    <div th:each="mapitem : ${mapmy}" th:id="${mapitem.getKey()}" style="margin: 20px 0;">
-        <div th:text="${mapitem.getKey()}" style="font-weight: bold;color: red;"></div>
-        <div th:each="item : ${mapitem.getValue()}"
-             style='display:inline-block;border:1px solid gray;margin:10px auto 0;;padding:5px;border: .0625rem solid #d6d6d6;border-radius: .1875rem;'>
-            <div>
-                <div th:text="${item.jiName}"></div>
-                <div th:if="${(item.trueSrc==null || item.trueSrc=='') && (item.firstSrc==null || item.firstSrc == '')}">
-                    暂无地址
-                </div>
-                <a th:if="${item.trueSrc!=null && item.trueSrc!=''}" href="javascript:void(0)" th:a="${item.trueSrc}"
-                   target="_blank" style="margin-right:20px;">地址</a>
-                <a th:if="${item.firstSrc!=null && item.firstSrc!=''}" href="javascript:void(0)" th:a="${item.firstSrc}"
-                   target="_blank">备用地址</a>
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Dropdown
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="javascript:change(this)" th:each="mapitem : ${mapmy}" th:text="${mapitem.getKey()}"></a>
+                </ul>
             </div>
 
+
+            <div th:each="mapitem : ${mapmy}" th:id="${mapitem.getKey()}" style="margin: 0px 0;">
+                <div th:text="${mapitem.getKey()}" style="font-weight: bold;color: red;"></div>
+                <div th:each="item : ${mapitem.getValue()}"
+                     style='display:inline-block;border:1px solid gray;margin:10px auto 0;;padding:5px;border: .0625rem solid #d6d6d6;border-radius: .1875rem;'>
+                    <div>
+                        <div th:text="${item.jiName}"></div>
+                        <div th:if="${(item.trueSrc==null || item.trueSrc=='') && (item.firstSrc==null || item.firstSrc == '')}">
+                            暂无地址
+                        </div>
+                        <a th:if="${item.trueSrc!=null && item.trueSrc!=''}" href="javascript:void(0)" th:a="${item.trueSrc}"
+                           target="_blank" style="margin-right:20px;">地址</a>
+                        <a th:if="${item.firstSrc!=null && item.firstSrc!=''}" href="javascript:void(0)" th:a="${item.firstSrc}"
+                           target="_blank">备用地址</a>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
+
+
+
+
 
 </div>
 
@@ -77,6 +98,9 @@
     //
     // }
     // setInterval(hideimg,1000);
+
+    $('.my-select').selectpicker();
+
     $("a").click(function () {
         var val = $(this).attr("a");
         console.log(val);
